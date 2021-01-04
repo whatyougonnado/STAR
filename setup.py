@@ -20,7 +20,7 @@
 # Ahmed A. A. Osman
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding='UTF8') as fh:
     long_description = fh.read()
     
 REQUIREMENTS = ["numpy", "chumpy", "opencv-python"]

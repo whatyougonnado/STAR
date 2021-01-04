@@ -19,16 +19,22 @@
 # Code Developed by:
 # Ahmed A. A. Osman 
 
-import chumpy  as ch
+import chumpy as ch
 import numpy as np
 import os
 from .verts import verts_decorated_quat 
 from ..config import cfg
 
-def STAR(gender='female',num_betas=10):
+def STAR(gender='female',num_betas=10, pose = '', betas = ''):
 
     if gender not in ['male','female','neutral']:
         raise RuntimeError('Invalid model gender!')
+
+    if betas == '':
+        pass
+    else:
+        num_betas = betas.shape[0]
+
     if num_betas < 2:
         raise RuntimeError('Number of betas should be at least 2')
 
@@ -53,10 +59,14 @@ def STAR(gender='female',num_betas=10):
     num_joints    = weights.shape[1]
     kintree_table = model_dict['kintree_table']
     f = model_dict['f']
-    betas = ch.array(np.zeros(num_betas)) #Betas
+
+    if betas == '':
+        betas = ch.array(np.zeros(num_betas)) #Betas
+    tt = ch.array(model_dict['shapedirs'][:,:,:])
     shapedirs = ch.array(model_dict['shapedirs'][:,:,:num_betas]) #Shape Corrective Blend shapes
 
-    pose = ch.array(np.zeros((num_joints*3))) #Pose Angles
+    if pose == '':
+        pose = ch.array(np.zeros((num_joints*3))) #Pose Angles
     model = verts_decorated_quat(trans=trans,
                     pose=pose,
                     v_template=v_tempalate,
