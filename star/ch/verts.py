@@ -36,6 +36,7 @@ def verts_decorated_quat(trans,
             assert ischumpy(which)
 
     v = v_template
+    debug_sdb = shapedirs.dot(betas)
     v_shaped = v + shapedirs.dot(betas) #Add Shape of the model.
     quaternion_angles = axis2quat(pose.reshape((-1, 3))).reshape(-1)[4:]
     shape_feat = betas[1]

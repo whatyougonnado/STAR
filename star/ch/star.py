@@ -62,7 +62,7 @@ def STAR(gender='female',num_betas=10, pose = '', betas = ''):
 
     if betas == '':
         betas = ch.array(np.zeros(num_betas)) #Betas
-    tt = ch.array(model_dict['shapedirs'][:,:,:])
+    debug_tt = ch.array(model_dict['shapedirs'][:,:,:])
     shapedirs = ch.array(model_dict['shapedirs'][:,:,:num_betas]) #Shape Corrective Blend shapes
 
     if pose == '':
