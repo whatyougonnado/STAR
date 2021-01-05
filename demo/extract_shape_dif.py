@@ -50,15 +50,20 @@ def extractor_template(gender, save_path, name):
     save_as_obj(v_tempalate_np, f_np, save_path, local_name)
 
 #https://stackoverflow.com/questions/27786868/python3-numpy-appending-to-a-file-using-numpy-savetxt
-def extractor_weight(gender, save_path, name):
-    file = open(save_path + name + ".txt")
+def extractor_weight_and_joint(gender, save_path, name, isWeight = True):
+    file = open(save_path + name + ".txt", 'w+')
     model_dict = get_gender_model(gender)
-    weights = np.array(ch.array(model_dict['weights']))
 
-    file.write(f'{weights.shape[1]} {weights.shape[0]}')
+    if isWeight:
+        weights = np.array(ch.array(model_dict['weights'])).astype('float')
+        file.write(f'{weights.shape[1]} {weights.shape[0]} \n')
+        np.savetxt(file, weights, delimiter=" ", fmt="%.9f") # need to check, is it round or round up or round down
+    else:
+        joints = np.array(ch.array(model_dict['J_regressor'])).astype('float')
+        file.write(f'{joints.shape[0]}\n{joints.shape[1]}\n')
+        np.savetxt(file, joints, delimiter=" ", fmt="%.9f") # need to check, is it round or round up or round down
+
     file.close()
-
-    np.savetxt(file, weights, delimiter=" ")
 
 def extractor(gender, save_path, name, type, total=-1, zfillnum = 0):
     model_dict = get_gender_model(gender)
@@ -77,30 +82,45 @@ def extractor(gender, save_path, name, type, total=-1, zfillnum = 0):
 
 if __name__ == "__main__":
     gender = "female"
-    # name = "shape"
-    # save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/f_blendshape/"
-    # extractor(gender=gender,name = name, save_path=save_path, type="shapedirs")
+    name = "shape"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/f_blendshape/"
+    extractor(gender=gender,name = name, save_path=save_path, type="shapedirs")
 
-    # name = "Pose"
-    # save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/f_pose_blendshapes/"
-    # extractor(gender=gender,name=name,save_path=save_path, type="posedirs", zfillnum=3)
+    name = "Pose"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/f_pose_blendshapes/"
+    extractor(gender=gender,name=name,save_path=save_path, type="posedirs", zfillnum=3)
 
     name = "f_shapeAv"
     save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/"
     extractor_template(gender, save_path, name)
 
+    name = "f_weight"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/"
+    extractor_weight_and_joint(gender=gender,save_path=save_path,name=name)
+
+    name = "f_joints_mat"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/f_star/"
+    extractor_weight_and_joint(gender=gender,save_path=save_path,name=name,isWeight=False)
+
+
     ##############################################################################################################################################################
-    # gender = "male"
-    # name = "shape"
-    # save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/m_blendshape/"
-    # extractor(gender=gender,name = name, save_path=save_path, type="shapedirs")
+    gender = "male"
+    name = "shape"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/m_blendshape/"
+    extractor(gender=gender,name = name, save_path=save_path, type="shapedirs")
 
-    # name = "Pose"
-    # save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/m_pose_blendshapes/"
-    # extractor(gender=gender,name=name,save_path=save_path, type="posedirs", zfillnum=3)
+    name = "Pose"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/m_pose_blendshapes/"
+    extractor(gender=gender,name=name,save_path=save_path, type="posedirs", zfillnum=3)
 
-    # name = "m_shapeAv"
-    # save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/"
-    # extractor_template(gender, save_path, name)
+    name = "m_shapeAv"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/"
+    extractor_template(gender, save_path, name)
 
+    name = "m_weight"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/"
+    extractor_weight_and_joint(gender=gender,save_path=save_path,name=name)
 
+    name = "m_joints_mat"
+    save_path = "C:/Users/AnotherMotion/Documents/GitLab/GK-Undressing-People-Ceres/Resources_STAR/m_star/"
+    extractor_weight_and_joint(gender=gender,save_path=save_path,name=name,isWeight=False)
