@@ -1,7 +1,6 @@
 
 STAR/config.py
 *.xml
-*.py
 *.iml
 *.obj
 *.egg
